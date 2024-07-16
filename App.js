@@ -1,17 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ProductList from './components/ProductList';
-import ProductDetail from './components/ProductDetail';
+import './App.css';
+import NumberFetcher from './NumberFetcher';
 
 function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={ProductList} />
-        <Route path="/product/:id" component={ProductDetail} />
-      </Switch>
-    </Router>
-  );
+    return (
+        <div className="App">
+            <header className="App-header">
+                <h1>Average Calculator</h1>
+                <NumberFetcher />
+            </header>
+        </div>
+    );
 }
 
 export default App;

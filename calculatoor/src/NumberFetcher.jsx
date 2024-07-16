@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const NumberFetcher = () => {
-    const [numberId, setNumberId] = useState('');
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
 
-    const fetchNumbers = async (id) => {
-        try {
-            const response = await fetch(`http://20.244.56.144/test/${id}`, { method: 'GET' });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    const [data, setData] = useState({});
+    const [error, setError] = useState(null);
+    const[id ,setId] = useState("");
+
+    useEffect(()=>{
+        const fetchNumbers = async (id) => {
+            try {
+                const response = await fetch(`http://20.244.56.144/test/${id}`, { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = await response.json();
+                setData(result);
+                setError(null);
+            } catch (err) {
+                setError('Failed to fetch numbers');
+                setData(null);
             }
-            const result = await response.json();
-            setData(result);
-            setError(null);
-        } catch (err) {
-            setError('Failed to fetch numbers');
-            setData(null);
         }
-    };
+
+        fetchNumbers();
+    },[id])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetchNumbers(numberId);
+        fetchNumbers(id);
     };
 
     return (
@@ -32,8 +37,11 @@ const NumberFetcher = () => {
                     Enter Number ID (p, f, e, r):
                     <input
                         type="text"
-                        value={numberId}
-                        onChange={(e) => setNumberId(e.target.value)}
+                        value={id}
+                        onChange={(e) => {
+                            e.preventDefault();
+                            
+                        }}
                     />
                 </label>
                 <button type="submit"
